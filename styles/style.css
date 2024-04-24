@@ -13,6 +13,9 @@ body {
     height: 100vh;
     background-color: var(--clr-background);
     font-family: var(--ff-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* global class & style*/
@@ -26,7 +29,7 @@ body {
 /* Style */
 
 .header {
-    padding: 2rem;
+    padding: 3rem 2rem;
 }
 
 .header-container {
@@ -60,4 +63,52 @@ body {
     font-weight: 600;
 }
 
+/* Main */
 
+.main {
+    flex-grow: 1;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 2rem;
+}
+
+.words-container {
+    max-width: 57.6875rem;
+    padding: 2rem;
+    height: 25rem;
+    border: 1px solid var(--clr-white);
+    margin: 0 auto;
+    display: flex;
+    gap: .5rem;
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.word {
+    display: flex;
+    gap: .1rem;
+    height: fit-content;
+}
+
+.main__restart-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.letter {
+    color: var(--clr-gray);
+    font-size: 1.8rem;
+}
+
+#wordInput {
+    opacity: 0;
+}
