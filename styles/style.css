@@ -15,3 +15,49 @@ body {
     font-family: var(--ff-primary);
 }
 
+/* global class & style*/
+
+.container {
+    max-width: 74.125rem;
+    margin: 0 auto;
+}
+
+
+/* Style */
+
+.header {
+    padding: 2rem;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.header-logo__text {
+    color: var(--clr-white);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.header-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-score__link {
+    color: var(--clr-white);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
