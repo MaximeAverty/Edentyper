@@ -85,7 +85,10 @@ body {
     justify-content: center;
     gap: 1.625rem;
     align-self: flex-start;
+    position: relative;
 }
+
+
 
 .options__number {
     text-decoration: none;
@@ -100,6 +103,36 @@ body {
 
 .option__number--active {
     color: var(--clr-primary);
+}
+
+.options-modal {
+    color: var(--clr-background);
+    position: absolute;
+    max-width: 50%;
+    display: flex;
+    text-align: center;
+    top: -20px;
+    left: 30px;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    background-color: var(--clr-white);
+    transition:  opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.options-icon:hover .options-modal {
+    opacity: 1;
+}
+
+.options-modal__triangle {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: inherit;
+    bottom: -5px;
+    right: 49%;
+    transform: translate(50%, 50%);
+    clip-path: polygon(24% 100%, 72% 100%, 100% 0, 0 0);
 }
 
 .words-container {
