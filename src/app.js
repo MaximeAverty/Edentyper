@@ -4,7 +4,7 @@ const wordsHandler = {
     wordsList: localWords.words,
     choosedWords: [],
     options: {
-        wordsNumber : 50,
+        wordsNumber : 25,
     },
 
     init: () => {

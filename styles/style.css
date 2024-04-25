@@ -18,14 +18,6 @@ body {
     overflow: hidden;
 }
 
-/* global class & style*/
-
-.container {
-    max-width: 74.125rem;
-    margin: 0 auto;
-}
-
-
 /* Style */
 
 .header {
@@ -38,6 +30,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 74.125rem;
+    margin: 0 auto;
 }
 
 .header-logo {
@@ -77,8 +71,35 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    gap: 2rem;
     padding: 0 2rem;
+    width: fit-content;
+    margin-inline: auto;
+}
+
+/* Options */
+
+.options {
+    padding: .3125rem .9375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.625rem;
+    align-self: flex-start;
+}
+
+.options__number {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: .2s ease-in-out;
+}
+
+.options__number:hover {
+    color: var(--clr-primary);
+}
+
+.option__number--active {
+    color: var(--clr-primary);
 }
 
 .words-container {
@@ -86,7 +107,7 @@ body {
     padding: 1rem 2rem;
     max-height: 15rem;
     border: 1px solid var(--clr-white);
-    margin: 0 auto;
+    margin: 1rem 0 2rem 0;
     display: flex;
     row-gap: .8rem;
     column-gap: 1rem;
@@ -95,6 +116,7 @@ body {
     flex-wrap: wrap;
     overflow: hidden;
     transition: .3s;
+    border-radius: 5px;
 }
 
 .word {
