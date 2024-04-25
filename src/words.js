@@ -1,6 +1,6 @@
 
 
-const wordsList = {
+const localWords = {
     words: [
         "Hello",
         "Love",

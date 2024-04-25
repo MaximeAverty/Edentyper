@@ -1,37 +1,34 @@
 
 const wordsHandler = {
 
-    wordsList: [],
+    wordsList: localWords.words,
+    choosedWords: [],
     options: {
         wordsNumber : 50,
     },
 
-    getRandomWords: async () => {
+    init: () => {
+        wordsHandler.getRandomWords()
+    },
+
+    getRandomWords: () => {
         for(let i = 0; i < wordsHandler.options.wordsNumber; i++) {
-            try{
-                const response = await fetch("https://random-word-api.herokuapp.com/word")
-                if(!response.ok) {
-                    throw new Error("Failed to fetch data")
-                }
-                const data = await response.json()
-                wordsHandler.wordsList.push(data[0])
-            } catch(e) {
-                console.error(e)
-            }
+            const randomWord = Math.floor(Math.random() * wordsHandler.wordsList.length)
+            wordsHandler.choosedWords.push(wordsHandler.wordsList[randomWord])
         }
         wordsHandler.createWords()
     },
 
     createWords: () => {
         const wordContainer = document.querySelector(".words-container")
-        wordsHandler.wordsList.forEach(word => {
+        wordsHandler.choosedWords.forEach(word => {
             word = word.toLowerCase()
             const wordDiv = document.createElement("div")
             wordDiv.classList.add("word")
             wordContainer.appendChild(wordDiv)
             const letters = [...word]
             letters.forEach(letter => {
-                const customLetter = document.createElement("letter")
+                const customLetter = document.createElement("span")
                 customLetter.classList.add("letter")
                 customLetter.textContent = letter
                 wordDiv.appendChild(customLetter)
@@ -40,4 +37,6 @@ const wordsHandler = {
     }
 
 }
+
+wordsHandler.init()
 
