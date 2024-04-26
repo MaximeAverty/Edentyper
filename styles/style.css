@@ -175,7 +175,7 @@ body {
 }
 
 .words-container__input {
-    opacity: 0;
+    opacity: 0.5;
     position: absolute;
     cursor: default;
 }
@@ -186,6 +186,10 @@ body {
     color: white;
 }
 
-.word--incorrect {
+.letter--correct {
+    color: var(--clr-white);
+}
+
+.letter--incorrect {
     color: brown;
 }
