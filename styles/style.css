@@ -153,6 +153,7 @@ body {
     overflow: hidden;
     transition: .3s;
     border-radius: 5px;
+    user-select: none;
 }
 
 .word {
