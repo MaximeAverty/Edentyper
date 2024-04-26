@@ -29,19 +29,17 @@ const wordsHandler = {
 
         wordsHandler.domElements.wordInput.value = ""
 
-        wordsHandler.domElements.wordInput.addEventListener("keyup", (e) => {
+        wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
+            e.preventDefault()
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
 
         // wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
-        //     if(e.keyCode === 8) {
-        //         if(wordsHandler.letterIndex > 0) {
-        //             wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-        //         }else {
-        //             console.log("TU ne peux pas suppr !")
-        //         }
+        //     if(e.keyCode === 32) {
+        //         e.preventDefault()
         //     }
         // })
+        
 
     },
 
@@ -90,15 +88,20 @@ const wordsHandler = {
 
     handleInput: (event, wordIndex, letterIndex) => {
         
+        debugger
 
         const input = wordsHandler.domElements.wordInput
-        const currentWord = wordsHandler.domElements.getAllWords[wordIndex]
+        let currentWord = wordsHandler.domElements.getAllWords[wordIndex]
         let currentLetter = wordsHandler.domElements.getAllLetters[letterIndex]
-            
-        input.setAttribute("maxlength", currentWord.textContent.length)
+        let maxLength = currentWord.textContent.length
 
-        if(event.keyCode !== 8 && 32) {
-            if(event.target.value[letterIndex] === currentLetter.textContent) {
+        console.log(maxLength)
+        
+
+        if(event.keyCode !== 8 && event.keyCode !== 32 ) {
+            console.log(event.key)
+            if(event.key === currentLetter.textContent) {
+                
                 currentLetter.classList.remove("letter--incorrect")
                 currentLetter.classList.add("letter--correct")
                 wordsHandler.letterIndex++
@@ -111,20 +114,13 @@ const wordsHandler = {
             if(wordsHandler.letterIndex > 0) {
                 
                 wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-                wordsHandler.domElements.getAllLetters[wordsHandler.letterIndex].classList.remove("letter--correct")
-                console.log(currentLetter.textContent)
+                wordsHandler.domElements.getAllLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
 
             }else {
                 console.log("tu ne peux pas supprimé")
             }
-        }else if(event.keyCode === 32) {
-            console.log("tu espace")
         }
         
-
-        
-       
-
 
     }
 
