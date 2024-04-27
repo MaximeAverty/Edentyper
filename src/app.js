@@ -68,12 +68,12 @@ const wordsHandler = {
         wordsHandler.domElements.getAllOptionsNumber.forEach(opt => {
             opt.addEventListener("click", () => {
                 wordsHandler.domElements.getAllOptionsNumber.forEach(btn => { 
-                    btn.classListNaNpxove("option__number--active")
+                    btn.classList.remove("option__number--active")
                 })
                 opt.classList.add("option__number--active")
                 wordsHandler.options.wordsNumber = Number(opt.textContent)
                 wordsHandler.domElements.getAllWords.forEach(word => {
-                    wordNaNpxove()
+                    word.remove()
                 })
                 wordsHandler.getRandomWords()
             })
@@ -81,7 +81,6 @@ const wordsHandler = {
     },
 
     handleInput: (event) => {
-        
         
         const SPACE_KEYCODE = 32
         const DEL_KEYCODE = 8
@@ -94,7 +93,6 @@ const wordsHandler = {
         let allSpanLetters = currentWord.querySelectorAll(".letter")
         let currentSpanLetter = allSpanLetters[letterIndex]
         
-        console.log(currentWord.textContent.length)
 
         if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
@@ -119,11 +117,11 @@ const wordsHandler = {
             }else if(event.keyCode === DEL_KEYCODE) {
                 if(wordsHandler.letterIndex > 0) {
                     if(input.value.length === currentWord.textContent.length) {
-                        allSpanLetters[wordsHandler.letterIndex].classListNaNpxove("letter--correct", "letter--incorrect")
+                        allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
                         
                     }else {
-                        allSpanLetters[wordsHandler.letterIndex - 1].classListNaNpxove("letter--correct", "letter--incorrect")
+                        allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
                         wordsHandler.letterIndex = wordsHandler.letterIndex - 1
                     }
