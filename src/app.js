@@ -30,6 +30,8 @@ const wordsHandler = {
         wordsHandler.domElements.wordInput.value = ""
 
         wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
+            const wordLength = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex].textContent.length.toString()
+            wordsHandler.domElements.wordInput.setAttribute("maxLength", wordLength)
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
 
@@ -103,8 +105,17 @@ const wordsHandler = {
         }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
             event.preventDefault()
             if(event.keyCode === SPACE_KEYCODE) {
-                
-                console.log("test")
+                if(input.value.length === currentWord.textContent.length) {
+                    wordsHandler.wordIndex++
+                    wordsHandler.letterIndex = 0
+                    input.value = ""
+                }else {
+                    input.value += "/"
+                    allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+                    if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                        wordsHandler.letterIndex++
+                    }
+                }
             }else if(event.keyCode === DEL_KEYCODE) {
                 if(wordsHandler.letterIndex > 0) {
                     if(input.value.length === currentWord.textContent.length) {
@@ -122,7 +133,9 @@ const wordsHandler = {
             
         }else {
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
-            wordsHandler.letterIndex++
+            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                wordsHandler.letterIndex++
+            }
         }
         
        
@@ -135,7 +148,7 @@ const wordsHandler = {
 }
 
 wordsHandler.init()
-
+console.log(wordsHandler.domElements.getAllWords[wordsHandler.wordIndex].textContent.length.toString())
 // J'écrit dans l'input.
 // Ca me place dans le premier mot et ca verifei que chaque charactere correspond a chaque lettre
 // SI ca correspond pas => je met la lettre en rouge Sinon => en blanc
