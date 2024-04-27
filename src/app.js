@@ -29,19 +29,9 @@ const wordsHandler = {
 
         wordsHandler.domElements.wordInput.value = ""
 
-        wordsHandler.domElements.wordInput.addEventListener("keyup", (e) => {
+        wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
-
-        // wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
-        //     if(e.keyCode === 8) {
-        //         if(wordsHandler.letterIndex > 0) {
-        //             wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-        //         }else {
-        //             console.log("TU ne peux pas suppr !")
-        //         }
-        //     }
-        // })
 
     },
 
@@ -88,43 +78,57 @@ const wordsHandler = {
         })
     },
 
-    handleInput: (event, wordIndex, letterIndex) => {
+    handleInput: (event) => {
         
+        
+        const SPACE_KEYCODE = 32
+        const DEL_KEYCODE = 8
 
-        const input = wordsHandler.domElements.wordInput
-        const currentWord = wordsHandler.domElements.getAllWords[wordIndex]
-        let currentLetter = wordsHandler.domElements.getAllLetters[letterIndex]
+        let input = wordsHandler.domElements.wordInput
+        
+        let letterIndex = wordsHandler.letterIndex
+        let currentWord = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex]
+
+        let allSpanLetters = currentWord.querySelectorAll(".letter")
+        let currentSpanLetter = allSpanLetters[letterIndex]
+        
+        console.log(currentWord.textContent.length)
+
+        if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
+            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
+            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                wordsHandler.letterIndex++
+            }
             
-        input.setAttribute("maxlength", currentWord.textContent.length)
-
-        if(event.keyCode !== 8 && 32) {
-            if(event.target.value[letterIndex] === currentLetter.textContent) {
-                currentLetter.classList.remove("letter--incorrect")
-                currentLetter.classList.add("letter--correct")
-                wordsHandler.letterIndex++
-            }else {
-                currentLetter.classList.add("letter--incorrect")
-                wordsHandler.letterIndex++
-            }
-        }
-        if(event.keyCode === 8) {
-            if(wordsHandler.letterIndex > 0) {
+        }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
+            event.preventDefault()
+            if(event.keyCode === SPACE_KEYCODE) {
                 
-                wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-                wordsHandler.domElements.getAllLetters[wordsHandler.letterIndex].classList.remove("letter--correct")
-                console.log(currentLetter.textContent)
-
-            }else {
-                console.log("tu ne peux pas supprimé")
+                console.log("test")
+            }else if(event.keyCode === DEL_KEYCODE) {
+                if(wordsHandler.letterIndex > 0) {
+                    if(input.value.length === currentWord.textContent.length) {
+                        allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
+                        input.value = input.value.slice(0, -1)
+                        
+                    }else {
+                        allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
+                        input.value = input.value.slice(0, -1)
+                        wordsHandler.letterIndex = wordsHandler.letterIndex - 1
+                    }
+                }
             }
-        }else if(event.keyCode === 32) {
-            console.log("tu espace")
+            
+            
+        }else {
+            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+            wordsHandler.letterIndex++
         }
-        
-
         
        
-
+    
+        
+        
 
     }
 
@@ -155,3 +159,39 @@ wordsHandler.init()
 //         const abcdefg =  wordsHandler.domElements.getAllLetters[letterIndex]
 
 //         console.log(abcdefg.textContent)
+
+
+
+
+
+// event.preventDefault()
+        // const input = wordsHandler.domElements.wordInput
+        // const currentWord = wordsHandler.domElements.getAllWords[wordIndex]
+        // let currentLetter = wordsHandler.domElements.getAllLetters[letterIndex]
+        // input.maxlength = currentWord.length
+
+// if(event.key === currentLetter.textContent) {
+//     currentLetter.classList.add("letter--correct")
+//     wordsHandler.letterIndex++
+//     input.value += event.key
+// }else if(event.keyCode === 8){
+//    wordsHandler.letterIndex--
+//    wordsHandler.domElements.getAllLetters[letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")      
+//     input.value = input.value.slice(0, -1)
+// }else if(event.keyCode === 32) {
+//     console.log(currentWord.textContent.length)
+//     console.log(letterIndex)
+//     if(input.value.length >= currentWord.textContent.length) {
+//         if(input.value === currentWord.textContent) {
+//             currentWord.classList.add("word--correct")
+//         }else {
+//             currentWord.classList.add("word--incorrect")
+//         }
+//         wordsHandler.wordIndex++
+//         input.value = ""
+//     }
+// }else {
+//     currentLetter.classList.add("letter--incorrect")
+//     input.value += event.key
+//     wordsHandler.letterIndex = wordsHandler.letterIndex + 1
+// }
