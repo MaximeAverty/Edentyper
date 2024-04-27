@@ -5,7 +5,7 @@ const wordsHandler = {
         wordContainer: document.getElementById("wordsContainer"),
         getAllOptionsNumber: document.querySelectorAll(".options__number"),
         wordInput: document.getElementById("wordInput"),
-        caret: document.querySelector(".caret"),
+        caret: null,
         getAllWords: null,
         getAllLetters: null,
         
@@ -24,7 +24,7 @@ const wordsHandler = {
         wordsHandler.getRandomWords()
 
         wordsHandler.changeWordsNumber()
-        wordsHandler.handleCaret()
+        wordsHandler.createCaret()
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
@@ -81,14 +81,27 @@ const wordsHandler = {
                 })
                 wordsHandler.wordIndex = 0
                 wordsHandler.letterIndex = 0
+                wordsHandler.caretIndex = 0
+                
                 wordsHandler.getRandomWords()
+                wordsHandler.handleCaret()
             })
         })
     },
 
+    createCaret: () => {
+        const caret = document.createElement("div")
+        caret.classList.add("caret")
+        wordsHandler.domElements.wordContainer.appendChild(caret)
+        wordsHandler.domElements.caret = document.querySelector(".caret")
+        wordsHandler.handleCaret()
+    },
+
     handleCaret: (isEndWord = false) => {
-        let letterPosY = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex].getBoundingClientRect().top
-        let letterPosX = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex].getBoundingClientRect().left
+        const letter = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex]
+        let letterPosY = letter.getBoundingClientRect().top
+        let letterPosX = letter.getBoundingClientRect().left
+        let letterWidth = letter.getBoundingClientRect().width
 
         if(!isEndWord) {
             wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
