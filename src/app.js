@@ -5,12 +5,15 @@ const wordsHandler = {
         wordContainer: document.getElementById("wordsContainer"),
         getAllOptionsNumber: document.querySelectorAll(".options__number"),
         wordInput: document.getElementById("wordInput"),
+        caret: document.querySelector(".caret"),
         getAllWords: null,
         getAllLetters: null,
         
     },
     wordIndex: 0,
     letterIndex: 0,
+    caretIndex: 0,
+    caretPos: null,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
@@ -21,7 +24,7 @@ const wordsHandler = {
         wordsHandler.getRandomWords()
 
         wordsHandler.changeWordsNumber()
-        
+        wordsHandler.handleCaret()
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
@@ -59,9 +62,10 @@ const wordsHandler = {
                 customLetter.textContent = letter
                 wordDiv.appendChild(customLetter)
             })
-            wordsHandler.domElements.getAllWords = document.querySelectorAll(".word")
-            wordsHandler.domElements.getAllLetters = document.querySelectorAll(".letter")
+            
         })
+        wordsHandler.domElements.getAllWords = document.querySelectorAll(".word")
+        wordsHandler.domElements.getAllLetters = document.querySelectorAll(".letter")
     },
 
     changeWordsNumber: () => {
@@ -75,9 +79,25 @@ const wordsHandler = {
                 wordsHandler.domElements.getAllWords.forEach(word => {
                     word.remove()
                 })
+                wordsHandler.wordIndex = 0
+                wordsHandler.letterIndex = 0
                 wordsHandler.getRandomWords()
             })
         })
+    },
+
+    handleCaret: (isEndWord = false) => {
+        let letterPosY = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex].getBoundingClientRect().top
+        let letterPosX = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex].getBoundingClientRect().left
+
+        if(!isEndWord) {
+            wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+            wordsHandler.domElements.caret.style.left = `${letterPosX}px`
+        }else {
+            wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+            wordsHandler.domElements.caret.style.left = `${letterPosX + 20}px`
+        }
+        
     },
 
     handleInput: (event) => {
@@ -87,17 +107,18 @@ const wordsHandler = {
 
         let input = wordsHandler.domElements.wordInput
         
-        let letterIndex = wordsHandler.letterIndex
         let currentWord = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex]
 
         let allSpanLetters = currentWord.querySelectorAll(".letter")
-        let currentSpanLetter = allSpanLetters[letterIndex]
-        
 
         if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
             if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
+                wordsHandler.caretIndex++
+                wordsHandler.handleCaret()
+            }else {
+                wordsHandler.handleCaret(true)
             }
             
         }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
@@ -105,6 +126,8 @@ const wordsHandler = {
             if(event.keyCode === SPACE_KEYCODE) {
                 if(input.value.length === currentWord.textContent.length) {
                     wordsHandler.wordIndex++
+                    wordsHandler.caretIndex++
+                    wordsHandler.handleCaret()
                     wordsHandler.letterIndex = 0
                     input.value = ""
                 }else {
@@ -112,6 +135,10 @@ const wordsHandler = {
                     allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
                     if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                         wordsHandler.letterIndex++
+                        wordsHandler.caretIndex++
+                        wordsHandler.handleCaret()
+                    }else {
+                        wordsHandler.handleCaret(true)
                     }
                 }
             }else if(event.keyCode === DEL_KEYCODE) {
@@ -119,11 +146,13 @@ const wordsHandler = {
                     if(input.value.length === currentWord.textContent.length) {
                         allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
-                        
+                        wordsHandler.handleCaret()
                     }else {
                         allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
                         wordsHandler.letterIndex = wordsHandler.letterIndex - 1
+                        wordsHandler.caretIndex = wordsHandler.caretIndex - 1
+                        wordsHandler.handleCaret()
                     }
                 }
             }
@@ -133,6 +162,10 @@ const wordsHandler = {
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
             if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
+                wordsHandler.caretIndex++
+                wordsHandler.handleCaret()
+            }else {
+                wordsHandler.handleCaret(true)
             }
         }
 

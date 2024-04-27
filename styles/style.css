@@ -154,6 +154,7 @@ body {
     transition: .3s;
     border-radius: 5px;
     user-select: none;
+    
 }
 
 .word {
@@ -172,10 +173,11 @@ body {
     color: var(--clr-gray);
     font-size: 2.5rem;
     cursor: default;
+    position: relative;
 }
 
 .words-container__input {
-    opacity: 0.5;
+    opacity: 0;
     position: absolute;
     cursor: default;
 }
@@ -192,4 +194,13 @@ body {
 
 .letter--incorrect {
     color: brown;
+}
+
+.caret {
+    position: absolute;
+    height: 45px;
+    width: 2px;
+    background-color: var(--clr-primary);
+    z-index: 999;
+    transition: .2s;
 }
