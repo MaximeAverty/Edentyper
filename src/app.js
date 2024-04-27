@@ -30,16 +30,10 @@ const wordsHandler = {
         wordsHandler.domElements.wordInput.value = ""
 
         wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
-            e.preventDefault()
+            const wordLength = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex].textContent.length.toString()
+            wordsHandler.domElements.wordInput.setAttribute("maxLength", wordLength)
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
-
-        // wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
-        //     if(e.keyCode === 32) {
-        //         e.preventDefault()
-        //     }
-        // })
-        
 
     },
 
@@ -86,41 +80,62 @@ const wordsHandler = {
         })
     },
 
-    handleInput: (event, wordIndex, letterIndex) => {
+    handleInput: (event) => {
         
-        debugger
+        const SPACE_KEYCODE = 32
+        const DEL_KEYCODE = 8
 
-        const input = wordsHandler.domElements.wordInput
-        let currentWord = wordsHandler.domElements.getAllWords[wordIndex]
-        let currentLetter = wordsHandler.domElements.getAllLetters[letterIndex]
-        let maxLength = currentWord.textContent.length
+        let input = wordsHandler.domElements.wordInput
+        
+        let letterIndex = wordsHandler.letterIndex
+        let currentWord = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex]
 
-        console.log(maxLength)
+        let allSpanLetters = currentWord.querySelectorAll(".letter")
+        let currentSpanLetter = allSpanLetters[letterIndex]
         
 
-        if(event.keyCode !== 8 && event.keyCode !== 32 ) {
-            console.log(event.key)
-            if(event.key === currentLetter.textContent) {
-                
-                currentLetter.classList.remove("letter--incorrect")
-                currentLetter.classList.add("letter--correct")
+        if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
+            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
+            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
-            }else {
-                currentLetter.classList.add("letter--incorrect")
+            }
+            
+        }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
+            event.preventDefault()
+            if(event.keyCode === SPACE_KEYCODE) {
+                if(input.value.length === currentWord.textContent.length) {
+                    wordsHandler.wordIndex++
+                    wordsHandler.letterIndex = 0
+                    input.value = ""
+                }else {
+                    input.value += " "
+                    allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+                    if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                        wordsHandler.letterIndex++
+                    }
+                }
+            }else if(event.keyCode === DEL_KEYCODE) {
+                if(wordsHandler.letterIndex > 0) {
+                    if(input.value.length === currentWord.textContent.length) {
+                        allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
+                        input.value = input.value.slice(0, -1)
+                        
+                    }else {
+                        allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
+                        input.value = input.value.slice(0, -1)
+                        wordsHandler.letterIndex = wordsHandler.letterIndex - 1
+                    }
+                }
+            }
+            
+            
+        }else {
+            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
             }
         }
-        if(event.keyCode === 8) {
-            if(wordsHandler.letterIndex > 0) {
-                
-                wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-                wordsHandler.domElements.getAllLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
 
-            }else {
-                console.log("tu ne peux pas supprimé")
-            }
-        }
-        
 
     }
 
@@ -128,26 +143,4 @@ const wordsHandler = {
 
 wordsHandler.init()
 
-// J'écrit dans l'input.
-// Ca me place dans le premier mot et ca verifei que chaque charactere correspond a chaque lettre
-// SI ca correspond pas => je met la lettre en rouge Sinon => en blanc
-// 
 
-
-// const shortCut = wordsHandler.domElements.getAllWords
-//         let wordCount = 0;
-
-//         wordsHandler.domElements.wordInput.addEventListener("keyup", (e) => {
-            
-//             const lettersOfWord = shortCut[wordCount].querySelectorAll(".letter")
-//             lettersOfWord.forEach(letter => {
-//                 console.log(letter.textContent)
-//             })
-
-//         })
-
-
-// const currentWord = wordsHandler.domElements.getAllWords[wordIndex];
-//         const abcdefg =  wordsHandler.domElements.getAllLetters[letterIndex]
-
-//         console.log(abcdefg.textContent)
