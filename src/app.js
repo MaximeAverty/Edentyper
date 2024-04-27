@@ -13,7 +13,6 @@ const wordsHandler = {
     wordIndex: 0,
     letterIndex: 0,
     caretIndex: 0,
-    caretPos: null,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
@@ -24,7 +23,7 @@ const wordsHandler = {
         wordsHandler.getRandomWords()
 
         wordsHandler.changeWordsNumber()
-        wordsHandler.createCaret()
+        
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
@@ -37,7 +36,8 @@ const wordsHandler = {
             wordsHandler.domElements.wordInput.setAttribute("maxLength", wordLength)
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
-
+        wordsHandler.createCaret()
+        
     },
 
     getRandomWords: () => {
@@ -102,7 +102,7 @@ const wordsHandler = {
         let letterPosY = letter.getBoundingClientRect().top
         let letterPosX = letter.getBoundingClientRect().left
         let letterWidth = letter.getBoundingClientRect().width
-
+        
         if(!isEndWord) {
             wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
             wordsHandler.domElements.caret.style.left = `${letterPosX}px`
@@ -110,6 +110,8 @@ const wordsHandler = {
             wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
             wordsHandler.domElements.caret.style.left = `${letterPosX + 20}px`
         }
+
+        
         
     },
 
@@ -138,6 +140,11 @@ const wordsHandler = {
             event.preventDefault()
             if(event.keyCode === SPACE_KEYCODE) {
                 if(input.value.length === currentWord.textContent.length) {
+                    if(input.value === currentWord.textContent) {
+                        currentWord.classList.add("word--correct")
+                    }else {
+                        currentWord.classList.add("word--incorrect")
+                    }
                     wordsHandler.wordIndex++
                     wordsHandler.caretIndex++
                     wordsHandler.handleCaret()
