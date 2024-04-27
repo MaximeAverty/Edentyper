@@ -68,12 +68,12 @@ const wordsHandler = {
         wordsHandler.domElements.getAllOptionsNumber.forEach(opt => {
             opt.addEventListener("click", () => {
                 wordsHandler.domElements.getAllOptionsNumber.forEach(btn => { 
-                    btn.classList.remove("option__number--active")
+                    btn.classListNaNpxove("option__number--active")
                 })
                 opt.classList.add("option__number--active")
                 wordsHandler.options.wordsNumber = Number(opt.textContent)
                 wordsHandler.domElements.getAllWords.forEach(word => {
-                    word.remove()
+                    wordNaNpxove()
                 })
                 wordsHandler.getRandomWords()
             })
@@ -110,7 +110,7 @@ const wordsHandler = {
                     wordsHandler.letterIndex = 0
                     input.value = ""
                 }else {
-                    input.value += "/"
+                    input.value += " "
                     allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
                     if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                         wordsHandler.letterIndex++
@@ -119,11 +119,11 @@ const wordsHandler = {
             }else if(event.keyCode === DEL_KEYCODE) {
                 if(wordsHandler.letterIndex > 0) {
                     if(input.value.length === currentWord.textContent.length) {
-                        allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
+                        allSpanLetters[wordsHandler.letterIndex].classListNaNpxove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
                         
                     }else {
-                        allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
+                        allSpanLetters[wordsHandler.letterIndex - 1].classListNaNpxove("letter--correct", "letter--incorrect")
                         input.value = input.value.slice(0, -1)
                         wordsHandler.letterIndex = wordsHandler.letterIndex - 1
                     }
@@ -137,74 +137,11 @@ const wordsHandler = {
                 wordsHandler.letterIndex++
             }
         }
-        
-       
-    
-        
-        
 
     }
 
 }
 
 wordsHandler.init()
-console.log(wordsHandler.domElements.getAllWords[wordsHandler.wordIndex].textContent.length.toString())
-// J'écrit dans l'input.
-// Ca me place dans le premier mot et ca verifei que chaque charactere correspond a chaque lettre
-// SI ca correspond pas => je met la lettre en rouge Sinon => en blanc
-// 
 
 
-// const shortCut = wordsHandler.domElements.getAllWords
-//         let wordCount = 0;
-
-//         wordsHandler.domElements.wordInput.addEventListener("keyup", (e) => {
-            
-//             const lettersOfWord = shortCut[wordCount].querySelectorAll(".letter")
-//             lettersOfWord.forEach(letter => {
-//                 console.log(letter.textContent)
-//             })
-
-//         })
-
-
-// const currentWord = wordsHandler.domElements.getAllWords[wordIndex];
-//         const abcdefg =  wordsHandler.domElements.getAllLetters[letterIndex]
-
-//         console.log(abcdefg.textContent)
-
-
-
-
-
-// event.preventDefault()
-        // const input = wordsHandler.domElements.wordInput
-        // const currentWord = wordsHandler.domElements.getAllWords[wordIndex]
-        // let currentLetter = wordsHandler.domElements.getAllLetters[letterIndex]
-        // input.maxlength = currentWord.length
-
-// if(event.key === currentLetter.textContent) {
-//     currentLetter.classList.add("letter--correct")
-//     wordsHandler.letterIndex++
-//     input.value += event.key
-// }else if(event.keyCode === 8){
-//    wordsHandler.letterIndex--
-//    wordsHandler.domElements.getAllLetters[letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")      
-//     input.value = input.value.slice(0, -1)
-// }else if(event.keyCode === 32) {
-//     console.log(currentWord.textContent.length)
-//     console.log(letterIndex)
-//     if(input.value.length >= currentWord.textContent.length) {
-//         if(input.value === currentWord.textContent) {
-//             currentWord.classList.add("word--correct")
-//         }else {
-//             currentWord.classList.add("word--incorrect")
-//         }
-//         wordsHandler.wordIndex++
-//         input.value = ""
-//     }
-// }else {
-//     currentLetter.classList.add("letter--incorrect")
-//     input.value += event.key
-//     wordsHandler.letterIndex = wordsHandler.letterIndex + 1
-// }
