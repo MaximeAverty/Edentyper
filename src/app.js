@@ -6,7 +6,10 @@ const wordsHandler = {
         getAllOptionsNumber: document.querySelectorAll(".options__number"),
         wordInput: document.getElementById("wordInput"),
         resultDiv: document.getElementById("resultDiv"),
+        scoreDiv: document.getElementById("bestscoreDiv"),
         restartBtn: document.getElementById("restartBtn"),
+        scoreBtn: document.getElementById("scoreBtn"),
+        closeScoreBtn: document.getElementById("closeScoreBtn"),
         caret: null,
         getAllWords: null,
         getAllLetters: null,
@@ -50,7 +53,19 @@ const wordsHandler = {
             wordsHandler.domElements.wordInput.setAttribute("maxLength", wordLength)
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
-        
+
+        wordsHandler.domElements.scoreBtn.addEventListener("click", (e) => {
+            e.preventDefault()
+            wordsHandler.displayScore()
+            const scoreDiv = wordsHandler.domElements.scoreDiv
+            scoreDiv.style.top = "0"
+            wordsHandler.domElements.closeScoreBtn.addEventListener("click", () => {
+                scoreDiv.style.top = "-100%"
+            })
+
+        })
+
+
         
     },
 
@@ -209,6 +224,9 @@ const wordsHandler = {
 
     displayScore: () => {
 
+        const scoreRaw = document.getElementById("scoreRaw")
+        const scoreNet = document.getElementById("scoreNet")
+
         const myLocalStorage = {...localStorage}
         let rawArr = []
         let netArr = []
@@ -221,11 +239,15 @@ const wordsHandler = {
         
         const filterScore = (arr, type) => {
             const sortedNumbers = arr.sort((a, b) => b - a)
-            const topThreeNumbers = sortedNumbers.slice(0, 3)
+            const topThreeNumbers = sortedNumbers.slice(0, 1)
             wordsHandler[type] = topThreeNumbers
         }
         filterScore(rawArr, "highScoreRaw")
         filterScore(netArr, "highScoreNet")
+
+        
+        scoreRaw.textContent = `${wordsHandler.highScoreRaw} wpm`
+        scoreNet.textContent = `${wordsHandler.highScoreNet} wpm`
 
     },
 

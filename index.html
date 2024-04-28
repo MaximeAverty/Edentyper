@@ -11,6 +11,8 @@
     <link rel="shortcut icon" href="./assets/svg/keyboard-shortcuts-svgrepo-com.svg" type="image/x-icon">
 </head>
 <body>
+
+    
     
     <header class="header">
         <div class="header-container container">
@@ -20,12 +22,14 @@
             </div>
             <div class="header-score">
                 <img src="./assets/svg/leaderboard-svgrepo-com.svg" alt="" class="header-score__img">
-                <a href="#" class="header-score__link">Best scores</a>
+                <a href="#" class="header-score__link" id="scoreBtn">Best scores</a>
             </div>
         </div>
     </header>
-
+    
+    <div class="blur-circle"></div>
     <main class="main">
+        
 
         <div class="main-container ">
             <div class="options">
@@ -63,6 +67,17 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="bestscore" id="bestscoreDiv">
+        <div class="score-info">
+            <h2 class="score-info__title">best score</h2>
+            <div class="score-info-wrapper">
+                <h3 class="score-info__h3">raw : <span class="score-info__primary" id="scoreRaw"></span></h3>
+                <h3 class="score-info__h3">net : <span class="score-info__primary" id="scoreNet"></span></h3>
+            </div>
+        </div>
+        <button class="score__close-btn" id="closeScoreBtn">close</button>
     </div>
 
     
