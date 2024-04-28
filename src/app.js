@@ -13,10 +13,12 @@ const wordsHandler = {
     wordIndex: 0,
     letterIndex: 0,
     caretIndex: 0,
+    chronoCounter: 1,
+    chronoTimer: null,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
-        wordsNumber : 10,
+        wordsNumber : 50,
         indexCounter: 10,
     },
 
@@ -28,6 +30,7 @@ const wordsHandler = {
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
+            wordsHandler.handlerChrono()
         })
 
         wordsHandler.domElements.wordInput.value = ""
@@ -131,6 +134,13 @@ const wordsHandler = {
         
     },
 
+    handlerChrono: () => {
+        wordsHandler.chronoTimer = setInterval(() => {
+            console.log(wordsHandler.chronoCounter)
+            wordsHandler.chronoCounter++
+        },1000)
+    },
+
 
     handleInput: (event) => {
         
@@ -158,6 +168,7 @@ const wordsHandler = {
             event.preventDefault()
             if(event.keyCode === SPACE_KEYCODE) {
                 if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
+                    clearInterval(wordsHandler.chronoTimer)
                     console.log("fini")
                     wordsHandler.domElements.wordInput.blur()
                 }else {
