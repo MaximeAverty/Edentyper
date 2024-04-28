@@ -15,6 +15,7 @@ const wordsHandler = {
     caretIndex: 0,
     startedTime: null,
     EndedTime: null,
+    isTestStarted: false,
     netWPM: null,
     rawWPM: null,
     wordsList: localWords.words,
@@ -32,7 +33,7 @@ const wordsHandler = {
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
-            wordsHandler.startedTime = new Date().getTime()
+            
         })
 
         wordsHandler.domElements.wordInput.value = ""
@@ -161,9 +162,12 @@ const wordsHandler = {
         let input = wordsHandler.domElements.wordInput
         
         let currentWord = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex]
-
         let allSpanLetters = currentWord.querySelectorAll(".letter")
 
+        if(!wordsHandler.isTestStarted) {
+            wordsHandler.startedTime = new Date().getTime()
+            wordsHandler.isTestStarted = true
+        }
         if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
             
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
@@ -181,7 +185,7 @@ const wordsHandler = {
                 if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
                     wordsHandler.EndedTime = new Date().getTime()
                     wordsHandler.calculateWPM()
-                    console.log("fini")
+                    wordsHandler.isTestStarted = false
                     wordsHandler.domElements.wordInput.blur()
                 }else {
                     if(input.value.length === currentWord.textContent.length) {
