@@ -21,6 +21,8 @@ const wordsHandler = {
     netWPM: null,
     rawWPM: null,
     accuracy: null,
+    highScoreRaw: [],
+    highScoreNet: [],
     wordsList: localWords.words,
     choosedWords: [],
     options: {
@@ -205,6 +207,28 @@ const wordsHandler = {
 
     },
 
+    displayScore: () => {
+
+        const myLocalStorage = {...localStorage}
+        let rawArr = []
+        let netArr = []
+
+        for(const score in myLocalStorage) {
+            const getObj = JSON.parse(myLocalStorage[`${score}`])
+            rawArr.push(Number(getObj.raw))
+            netArr.push(Number(getObj.net))
+        }
+        
+        const filterScore = (arr, type) => {
+            const sortedNumbers = arr.sort((a, b) => b - a)
+            const topThreeNumbers = sortedNumbers.slice(0, 3)
+            wordsHandler[type] = topThreeNumbers
+        }
+        filterScore(rawArr, "highScoreRaw")
+        filterScore(netArr, "highScoreNet")
+
+    },
+
 
     handleInput: (event) => {
         
@@ -306,4 +330,34 @@ window.onload = () => {
     wordsHandler.init();
 };
 
+// let allScore = {...localStorage}
+// let rawArr = []
+// let netArr = []
+// function testLocal () {
 
+//     for(const score in allScore) {
+        
+//         const getObj = JSON.parse(allScore[`${score}`])
+//         rawArr.push(getObj.raw)
+//         netArr.push(getObj.net)
+//     }
+    
+
+// }
+
+// const testObj = {
+//     score1: {
+//         raw: 31,
+//         net: 52
+//     },
+//     score2: {
+//         raw: 32,
+//         net: 23
+//     },
+//     score3: {
+//         raw: 51,
+//         net: 23
+//     }
+// }
+
+// console.log(testObj["score1"]["raw"])

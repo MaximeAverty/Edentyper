@@ -202,7 +202,7 @@ body {
 }
 
 .letter--incorrect {
-    color: brown;
+    color: #DD5746;
 }
 
 .caret {
