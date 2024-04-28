@@ -245,9 +245,9 @@ const wordsHandler = {
         filterScore(rawArr, "highScoreRaw")
         filterScore(netArr, "highScoreNet")
 
+        wordsHandler.highScoreRaw < 1 ? scoreRaw.textContent = 0 : scoreRaw.textContent = `${wordsHandler.highScoreRaw} wpm`
         
-        scoreRaw.textContent = `${wordsHandler.highScoreRaw} wpm`
-        scoreNet.textContent = `${wordsHandler.highScoreNet} wpm`
+        wordsHandler.highScoreNet < 1 ? scoreNet.textContent = 0 : scoreNet.textContent = `${wordsHandler.highScoreNet} wpm`
 
     },
 
@@ -352,34 +352,3 @@ window.onload = () => {
     wordsHandler.init();
 };
 
-// let allScore = {...localStorage}
-// let rawArr = []
-// let netArr = []
-// function testLocal () {
-
-//     for(const score in allScore) {
-        
-//         const getObj = JSON.parse(allScore[`${score}`])
-//         rawArr.push(getObj.raw)
-//         netArr.push(getObj.net)
-//     }
-    
-
-// }
-
-// const testObj = {
-//     score1: {
-//         raw: 31,
-//         net: 52
-//     },
-//     score2: {
-//         raw: 32,
-//         net: 23
-//     },
-//     score3: {
-//         raw: 51,
-//         net: 23
-//     }
-// }
-
-// console.log(testObj["score1"]["raw"])
