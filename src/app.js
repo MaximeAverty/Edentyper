@@ -16,7 +16,7 @@ const wordsHandler = {
     wordsList: localWords.words,
     choosedWords: [],
     options: {
-        wordsNumber : 50,
+        wordsNumber : 10,
         indexCounter: 10,
     },
 
@@ -157,29 +157,35 @@ const wordsHandler = {
         }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
             event.preventDefault()
             if(event.keyCode === SPACE_KEYCODE) {
-                if(input.value.length === currentWord.textContent.length) {
-                    if(input.value === currentWord.textContent) {
-                        currentWord.classList.add("word--correct")
-                    }else {
-                        currentWord.classList.add("word--incorrect")
-                    }
-                    wordsHandler.wordIndex++
-                    wordsHandler.caretIndex++
-                    wordsHandler.handleCaret()
-                    wordsHandler.letterIndex = 0
-                    input.value = ""
+                if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
+                    console.log("fini")
+                    wordsHandler.domElements.wordInput.blur()
                 }else {
-                    input.value += " "
-                    allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
-                    if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
-                        wordsHandler.letterIndex++
+                    if(input.value.length === currentWord.textContent.length) {
+                        if(input.value === currentWord.textContent) {
+                            currentWord.classList.add("word--correct")
+                        }else {
+                            currentWord.classList.add("word--incorrect")
+                        }
+                        wordsHandler.wordIndex++
                         wordsHandler.caretIndex++
                         wordsHandler.handleCaret()
+                        wordsHandler.letterIndex = 0
+                        input.value = ""
+                        
                     }else {
-                        console.log(allSpanLetters[wordsHandler.letterIndex])
-                        wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                        input.value += " "
+                        allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+                        if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                            wordsHandler.letterIndex++
+                            wordsHandler.caretIndex++
+                            wordsHandler.handleCaret()
+                        }else {
+                            wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                        }
                     }
                 }
+                
             }else if(event.keyCode === DEL_KEYCODE) {
                 if(wordsHandler.letterIndex > 0) {
                     if(input.value.length === currentWord.textContent.length) {
