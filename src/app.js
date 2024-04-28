@@ -13,12 +13,14 @@ const wordsHandler = {
     wordIndex: 0,
     letterIndex: 0,
     caretIndex: 0,
-    chronoCounter: 1,
-    chronoTimer: null,
+    startedTime: null,
+    EndedTime: null,
+    netWPM: null,
+    rawWPM: null,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
-        wordsNumber : 50,
+        wordsNumber : 25,
         indexCounter: 10,
     },
 
@@ -30,7 +32,7 @@ const wordsHandler = {
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
-            wordsHandler.handlerChrono()
+            wordsHandler.startedTime = new Date().getTime()
         })
 
         wordsHandler.domElements.wordInput.value = ""
@@ -134,11 +136,20 @@ const wordsHandler = {
         
     },
 
-    handlerChrono: () => {
-        wordsHandler.chronoTimer = setInterval(() => {
-            console.log(wordsHandler.chronoCounter)
-            wordsHandler.chronoCounter++
-        },1000)
+    calculateWPM: () => {
+        const allCorrectLetters = document.querySelectorAll(".letter--correct").length;
+        const allIncorrectLetters = document.querySelectorAll(".letter--incorrect").length;
+        
+        const totalCorrectLetters = allCorrectLetters + allIncorrectLetters;
+        const elapsedTimeInSeconds = (wordsHandler.EndedTime - wordsHandler.startedTime) / 1000;
+    
+        
+        wordsHandler.rawWPM = ((totalCorrectLetters / 5) / (elapsedTimeInSeconds / 60)).toFixed(2); 
+    
+        wordsHandler.netWPM = ((allCorrectLetters / 5) / (elapsedTimeInSeconds / 60)).toFixed(2); 
+    
+
+        console.log(wordsHandler.rawWPM, wordsHandler.netWPM)
     },
 
 
@@ -168,7 +179,8 @@ const wordsHandler = {
             event.preventDefault()
             if(event.keyCode === SPACE_KEYCODE) {
                 if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
-                    clearInterval(wordsHandler.chronoTimer)
+                    wordsHandler.EndedTime = new Date().getTime()
+                    wordsHandler.calculateWPM()
                     console.log("fini")
                     wordsHandler.domElements.wordInput.blur()
                 }else {
