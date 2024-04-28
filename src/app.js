@@ -165,7 +165,6 @@ const wordsHandler = {
 
         const accuracy = (allCorrectLetters / totalLetter) * 100
         wordsHandler.accuracy = accuracy.toFixed(2)
-        console.log(`${wordsHandler.accuracy}%`)
     },
 
     displayResult: () => {
@@ -188,6 +187,21 @@ const wordsHandler = {
     },
 
     handleScore: () => {
+
+        class Score {
+            constructor(raw, net) {
+                this.raw = raw,
+                this.net = net
+            }
+        }
+
+        const rawWPM = wordsHandler.rawWPM
+        const netWPM = wordsHandler.netWPM
+
+        const newScore = JSON.stringify(new Score(rawWPM, netWPM))
+        const localLength = localStorage.length
+
+        localStorage.setItem(`score${localLength+1}`, newScore)
 
     },
 
@@ -226,6 +240,7 @@ const wordsHandler = {
                     wordsHandler.calculateWPM()
                     wordsHandler.caluclateAccuracy()
                     wordsHandler.isTestStarted = false
+                    wordsHandler.handleScore()
                     wordsHandler.displayResult()
                     wordsHandler.domElements.wordInput.blur()
                 }else {
