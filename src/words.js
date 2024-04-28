@@ -45,6 +45,7 @@ const localWords = {
         "Adore",
         "Blissful",
         "Comfort",
+        "Another",
         "Enchant",
         "Heartwarming",
         "Peaceful",

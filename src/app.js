@@ -17,13 +17,14 @@ const wordsHandler = {
     choosedWords: [],
     options: {
         wordsNumber : 50,
+        indexCounter: 10,
     },
 
     init: () => {
         wordsHandler.getRandomWords()
 
         wordsHandler.changeWordsNumber()
-        
+        wordsHandler.createCaret()
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
@@ -36,7 +37,7 @@ const wordsHandler = {
             wordsHandler.domElements.wordInput.setAttribute("maxLength", wordLength)
             wordsHandler.handleInput(e, wordsHandler.wordIndex, wordsHandler.letterIndex)
         })
-        wordsHandler.createCaret()
+        
         
     },
 
@@ -97,23 +98,39 @@ const wordsHandler = {
         wordsHandler.handleCaret()
     },
 
-    handleCaret: (isEndWord = false) => {
+    handleCaret: (isEndWord = false, checkLetter) => {
         const letter = wordsHandler.domElements.getAllLetters[wordsHandler.caretIndex]
         let letterPosY = letter.getBoundingClientRect().top
         let letterPosX = letter.getBoundingClientRect().left
         let letterWidth = letter.getBoundingClientRect().width
-        
+
         if(!isEndWord) {
             wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
             wordsHandler.domElements.caret.style.left = `${letterPosX}px`
         }else {
-            wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
-            wordsHandler.domElements.caret.style.left = `${letterPosX + 20}px`
+            switch(checkLetter) {
+                case("t"):
+                    wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+                    wordsHandler.domElements.caret.style.left = `${letterPosX + 10}px`
+                    break
+                case("m"):
+                    wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+                    wordsHandler.domElements.caret.style.left = `${letterPosX + 25}px`
+                    break
+                case("l"):
+                    wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+                    wordsHandler.domElements.caret.style.left = `${letterPosX + 5}px`
+                    break
+                default:
+                    wordsHandler.domElements.caret.style.top = `${letterPosY + 10}px`
+                    wordsHandler.domElements.caret.style.left = `${letterPosX + 15}px`
+                    break
+            }
+            
         }
-
-        
         
     },
+
 
     handleInput: (event) => {
         
@@ -127,13 +144,14 @@ const wordsHandler = {
         let allSpanLetters = currentWord.querySelectorAll(".letter")
 
         if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
+            
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
             if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
                 wordsHandler.caretIndex++
                 wordsHandler.handleCaret()
             }else {
-                wordsHandler.handleCaret(true)
+                wordsHandler.handleCaret(true, event.key)
             }
             
         }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
@@ -195,5 +213,4 @@ const wordsHandler = {
 }
 
 wordsHandler.init()
-
 
