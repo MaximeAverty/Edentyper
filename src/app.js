@@ -176,7 +176,8 @@ const wordsHandler = {
                         wordsHandler.caretIndex++
                         wordsHandler.handleCaret()
                     }else {
-                        wordsHandler.handleCaret(true)
+                        console.log(allSpanLetters[wordsHandler.letterIndex])
+                        wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
                     }
                 }
             }else if(event.keyCode === DEL_KEYCODE) {
@@ -203,7 +204,7 @@ const wordsHandler = {
                 wordsHandler.caretIndex++
                 wordsHandler.handleCaret()
             }else {
-                wordsHandler.handleCaret(true)
+                wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
             }
         }
 
