@@ -18,11 +18,11 @@ const wordsHandler = {
     isTestStarted: false,
     netWPM: null,
     rawWPM: null,
+    accuracy: null,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
         wordsNumber : 25,
-        indexCounter: 10,
     },
 
     init: () => {
@@ -151,6 +151,17 @@ const wordsHandler = {
     
 
         console.log(wordsHandler.rawWPM, wordsHandler.netWPM)
+    },
+
+    caluclateAccuracy: () => {
+        const allCorrectLetters = document.querySelectorAll(".letter--correct").length;
+        const allIncorrectLetters = document.querySelectorAll(".letter--incorrect").length;
+
+        const totalLetter = allCorrectLetters + allIncorrectLetters
+
+        const accuracy = (allCorrectLetters / totalLetter) * 100
+        wordsHandler.accuracy = accuracy.toFixed(2)
+        console.log(`${wordsHandler.accuracy}%`)
     },
 
 
