@@ -214,4 +214,49 @@ body {
     height: 100%;
     z-index: 999;
     backdrop-filter: blur(7px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--clr-white);
+    font-size: 1.5rem;
+    top: -100%;
 }
+
+.result-container {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.result-row {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.result__primary {
+    color: var(--clr-primary);
+}
+
+.result__btn {
+    flex-grow: 1;
+    border: 2px solid var(--clr-primary);
+    background-color: transparent;
+    color: var(--clr-white);
+    cursor: pointer;
+    margin-left: 15px;
+    transition: .5s ;
+    
+}
+
+.result__btn:hover {
+    box-shadow: 3px 3px 0px 0px #43FFAF;
+    transform: translateY(-5px);
+    transform: translateX(-5px);
+}
+
+
+
