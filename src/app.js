@@ -5,6 +5,8 @@ const wordsHandler = {
         wordContainer: document.getElementById("wordsContainer"),
         getAllOptionsNumber: document.querySelectorAll(".options__number"),
         wordInput: document.getElementById("wordInput"),
+        resultDiv: document.getElementById("resultDiv"),
+        restartBtn: document.getElementById("restartBtn"),
         caret: null,
         getAllWords: null,
         getAllLetters: null,
@@ -37,6 +39,8 @@ const wordsHandler = {
         })
 
         wordsHandler.domElements.wordInput.value = ""
+
+        wordsHandler.domElements.restartBtn.addEventListener("click", wordsHandler.restartTest)
 
         wordsHandler.domElements.wordInput.addEventListener("keydown", (e) => {
             const wordLength = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex].textContent.length.toString()
@@ -83,17 +87,20 @@ const wordsHandler = {
                 })
                 opt.classList.add("option__number--active")
                 wordsHandler.options.wordsNumber = Number(opt.textContent)
-                wordsHandler.domElements.getAllWords.forEach(word => {
-                    word.remove()
-                })
-                wordsHandler.wordIndex = 0
-                wordsHandler.letterIndex = 0
-                wordsHandler.caretIndex = 0
-                
-                wordsHandler.getRandomWords()
-                wordsHandler.handleCaret()
+                wordsHandler.restartTest()
             })
         })
+    },
+
+    restartTest: () => {
+        wordsHandler.domElements.getAllWords.forEach(word => {
+            word.remove()
+        })
+        wordsHandler.wordIndex = 0;
+        wordsHandler.letterIndex = 0;
+        wordsHandler.caretIndex = 0;
+        wordsHandler.getRandomWords()
+        wordsHandler.handleCaret()
     },
 
     createCaret: () => {
@@ -144,13 +151,8 @@ const wordsHandler = {
         const totalCorrectLetters = allCorrectLetters + allIncorrectLetters;
         const elapsedTimeInSeconds = (wordsHandler.EndedTime - wordsHandler.startedTime) / 1000;
     
-        
         wordsHandler.rawWPM = ((totalCorrectLetters / 5) / (elapsedTimeInSeconds / 60)).toFixed(2); 
-    
         wordsHandler.netWPM = ((allCorrectLetters / 5) / (elapsedTimeInSeconds / 60)).toFixed(2); 
-    
-
-        console.log(wordsHandler.rawWPM, wordsHandler.netWPM)
     },
 
     caluclateAccuracy: () => {
@@ -162,6 +164,25 @@ const wordsHandler = {
         const accuracy = (allCorrectLetters / totalLetter) * 100
         wordsHandler.accuracy = accuracy.toFixed(2)
         console.log(`${wordsHandler.accuracy}%`)
+    },
+
+    displayResult: () => {
+
+        const spanRaw = document.getElementById("spanRaw")
+        const spanNet = document.getElementById("spanNet")
+        const spanAccuracy = document.getElementById("spanAccuracy")
+        const closeBtn = document.getElementById("closeResult")
+
+        spanRaw.textContent = wordsHandler.rawWPM
+        spanNet.textContent = wordsHandler.netWPM
+        spanAccuracy.textContent = `${wordsHandler.accuracy}%`
+
+        wordsHandler.domElements.resultDiv.style.top = "0"
+
+        closeBtn.addEventListener("click", () => {
+            wordsHandler.domElements.resultDiv.style.top = "-100%"
+        })
+
     },
 
 
@@ -195,8 +216,11 @@ const wordsHandler = {
             if(event.keyCode === SPACE_KEYCODE) {
                 if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
                     wordsHandler.EndedTime = new Date().getTime()
+                    wordsHandler.wordIndex = 0
                     wordsHandler.calculateWPM()
+                    wordsHandler.caluclateAccuracy()
                     wordsHandler.isTestStarted = false
+                    wordsHandler.displayResult()
                     wordsHandler.domElements.wordInput.blur()
                 }else {
                     if(input.value.length === currentWord.textContent.length) {
