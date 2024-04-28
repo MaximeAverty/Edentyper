@@ -99,6 +99,7 @@ const wordsHandler = {
         wordsHandler.wordIndex = 0;
         wordsHandler.letterIndex = 0;
         wordsHandler.caretIndex = 0;
+        wordsHandler.domElements.wordInput.value = ""
         wordsHandler.getRandomWords()
         wordsHandler.handleCaret()
     },
