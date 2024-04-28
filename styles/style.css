@@ -136,6 +136,14 @@ body {
     clip-path: polygon(24% 100%, 72% 100%, 100% 0, 0 0);
 }
 
+.main__restart-btn {
+    transition: .3s;
+}
+
+.main__restart-btn:hover {
+    transform: rotate(90deg);
+}
+
 /* Words  */
 
 .words-container {

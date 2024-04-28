@@ -32,6 +32,7 @@ const wordsHandler = {
 
         wordsHandler.changeWordsNumber()
         wordsHandler.createCaret()
+        wordsHandler.handleCaret()
 
         wordsHandler.domElements.wordContainer.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
@@ -186,6 +187,10 @@ const wordsHandler = {
 
     },
 
+    handleScore: () => {
+
+    },
+
 
     handleInput: (event) => {
         
@@ -282,5 +287,8 @@ const wordsHandler = {
 
 }
 
-wordsHandler.init()
+window.onload = () => {
+    wordsHandler.init();
+};
+
 
