@@ -228,6 +228,7 @@ const wordsHandler = {
             }
         } catch (error) {
             console.error("Error handling score:", error);
+
         }
     },
 
