@@ -205,6 +205,7 @@ const wordsHandler = {
 
     handleScore: () => {
 
+
         class Score {
             constructor(raw, net) {
                 this.raw = raw,
@@ -215,10 +216,18 @@ const wordsHandler = {
         const rawWPM = wordsHandler.rawWPM
         const netWPM = wordsHandler.netWPM
 
-        const newScore = JSON.stringify(new Score(rawWPM, netWPM))
-        const localLength = localStorage.length
+        
+        if(!localStorage.length < 1) {
+            const getStoredScore = JSON.parse(localStorage.score)
+            if(getStoredScore.raw < rawWPM && getStoredScore.net < netWPM) {
+                const newScore = JSON.stringify(new Score(rawWPM, netWPM))
+                localStorage.setItem("score", newScore)
+            }
+        }else {
+            const newScore = JSON.stringify(new Score(rawWPM, netWPM))
+            localStorage.setItem("score", newScore)
+        }
 
-        localStorage.setItem(`score${localLength+1}`, newScore)
 
     },
 
@@ -227,27 +236,14 @@ const wordsHandler = {
         const scoreRaw = document.getElementById("scoreRaw")
         const scoreNet = document.getElementById("scoreNet")
 
-        const myLocalStorage = {...localStorage}
-        let rawArr = []
-        let netArr = []
-
-        for(const score in myLocalStorage) {
-            const getObj = JSON.parse(myLocalStorage[`${score}`])
-            rawArr.push(Number(getObj.raw))
-            netArr.push(Number(getObj.net))
+        if(localStorage.length < 1) {
+            scoreRaw.textContent = `0 wpm`
+            scoreNet.textContent = `0 wpm`
+        }else {
+            const scores = { raw: JSON.parse(localStorage.score).raw, net: JSON.parse(localStorage.score).net }
+            scoreNet.textContent = `${scores.net} wpm`
+            scoreRaw.textContent = `${scores.raw} wpm`
         }
-        
-        const filterScore = (arr, type) => {
-            const sortedNumbers = arr.sort((a, b) => b - a)
-            const topThreeNumbers = sortedNumbers.slice(0, 1)
-            wordsHandler[type] = topThreeNumbers
-        }
-        filterScore(rawArr, "highScoreRaw")
-        filterScore(netArr, "highScoreNet")
-
-        wordsHandler.highScoreRaw < 1 ? scoreRaw.textContent = 0 : scoreRaw.textContent = `${wordsHandler.highScoreRaw} wpm`
-        
-        wordsHandler.highScoreNet < 1 ? scoreNet.textContent = 0 : scoreNet.textContent = `${wordsHandler.highScoreNet} wpm`
 
     },
 
