@@ -205,48 +205,50 @@ const wordsHandler = {
     },
 
     handleScore: () => {
-
-
         class Score {
             constructor(raw, net) {
-                this.raw = raw,
-                this.net = net
+                this.raw = raw;
+                this.net = net;
             }
         }
-
-        const rawWPM = wordsHandler.rawWPM
-        const netWPM = wordsHandler.netWPM
-
-        
-        if(!localStorage.length < 1) {
-            const getStoredScore = JSON.parse(localStorage.score)
-            if(getStoredScore.raw < rawWPM && getStoredScore.net < netWPM) {
-                const newScore = JSON.stringify(new Score(rawWPM, netWPM))
-                localStorage.setItem("score", newScore)
+    
+        const rawWPM = wordsHandler.rawWPM;
+        const netWPM = wordsHandler.netWPM;
+    
+        try {
+            if (localStorage.score) {
+                const getStoredScore = JSON.parse(localStorage.score);
+                if (getStoredScore.raw < rawWPM && getStoredScore.net < netWPM) {
+                    const newScore = new Score(rawWPM, netWPM);
+                    localStorage.score = JSON.stringify(newScore);
+                }
+            } else {
+                const newScore = new Score(rawWPM, netWPM);
+                localStorage.score = JSON.stringify(newScore);
             }
-        }else {
-            const newScore = JSON.stringify(new Score(rawWPM, netWPM))
-            localStorage.setItem("score", newScore)
+        } catch (error) {
+            console.error("Error handling score:", error);
         }
-
-
     },
 
     displayScore: () => {
-
-        const scoreRaw = document.getElementById("scoreRaw")
-        const scoreNet = document.getElementById("scoreNet")
-
-        if(localStorage.length < 1) {
-            scoreRaw.textContent = `0 wpm`
-            scoreNet.textContent = `0 wpm`
-        }else {
-            const scores = { raw: JSON.parse(localStorage.score).raw, net: JSON.parse(localStorage.score).net }
-            scoreNet.textContent = `${scores.net} wpm`
-            scoreRaw.textContent = `${scores.raw} wpm`
+        const scoreRaw = document.getElementById("scoreRaw");
+        const scoreNet = document.getElementById("scoreNet");
+    
+        if (!localStorage.score) {
+            scoreRaw.textContent = `0 wpm`;
+            scoreNet.textContent = `0 wpm`;
+        } else {
+            try {
+                const scores = JSON.parse(localStorage.score);
+                scoreNet.textContent = `${scores.net} wpm`;
+                scoreRaw.textContent = `${scores.raw} wpm`;
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+            }
         }
-
     },
+    
 
 
     handleInput: (event) => {
