@@ -24,8 +24,7 @@ const wordsHandler = {
     netWPM: null,
     rawWPM: null,
     accuracy: null,
-    highScoreRaw: [],
-    highScoreNet: [],
+    accuracyCounter: 0,
     wordsList: localWords.words,
     choosedWords: [],
     options: {
@@ -95,6 +94,7 @@ const wordsHandler = {
         })
         wordsHandler.domElements.getAllWords = document.querySelectorAll(".word")
         wordsHandler.domElements.getAllLetters = document.querySelectorAll(".letter")
+        wordsHandler.accuracyCounter = 0
     },
 
     changeWordsNumber: () => {
@@ -175,13 +175,14 @@ const wordsHandler = {
     },
 
     caluclateAccuracy: () => {
-        const allCorrectLetters = document.querySelectorAll(".letter--correct").length;
-        const allIncorrectLetters = document.querySelectorAll(".letter--incorrect").length;
+        
 
-        const totalLetter = allCorrectLetters + allIncorrectLetters
-
-        const accuracy = (allCorrectLetters / totalLetter) * 100
+        const totalLetters = wordsHandler.domElements.getAllLetters.length
+        const incorrectCount = wordsHandler.accuracyCounter
+        
+        const accuracy = (1 - (incorrectCount / totalLetters)) * 100
         wordsHandler.accuracy = accuracy.toFixed(2)
+        
     },
 
     displayResult: () => {
@@ -285,19 +286,20 @@ const wordsHandler = {
                     wordsHandler.handleScore()
                     wordsHandler.displayResult()
                     wordsHandler.domElements.wordInput.blur()
+                    wordsHandler.accuracy = 0;
                 }else {
                     if(input.value.length === currentWord.textContent.length) {
                         if(input.value === currentWord.textContent) {
                             currentWord.classList.add("word--correct")
                         }else {
                             currentWord.classList.add("word--incorrect")
+                            wordsHandler.accuracyCounter++
                         }
                         wordsHandler.wordIndex++
                         wordsHandler.caretIndex++
                         wordsHandler.handleCaret()
                         wordsHandler.letterIndex = 0
                         input.value = ""
-                        
                     }else {
                         input.value += " "
                         allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
@@ -305,6 +307,7 @@ const wordsHandler = {
                             wordsHandler.letterIndex++
                             wordsHandler.caretIndex++
                             wordsHandler.handleCaret()
+                            wordsHandler.accuracyCounter++
                         }else {
                             wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
                         }
@@ -330,12 +333,15 @@ const wordsHandler = {
             
         }else {
             allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+            wordsHandler.accuracyCounter++
             if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
                 wordsHandler.letterIndex++
                 wordsHandler.caretIndex++
                 wordsHandler.handleCaret()
+                
             }else {
                 wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                
             }
         }
 
