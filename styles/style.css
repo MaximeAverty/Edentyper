@@ -87,6 +87,20 @@ body {
     margin-inline: auto;
 }
 
+.main__github-btn {
+    color: var(--clr-white);
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+    font-size: 2rem;
+    transition: .3s  ease-in-out;
+}
+
+.main__github-btn:hover {
+    color: var(--clr-primary);
+    bottom: 2%;
+}
+
 /* Options */
 
 .options {
