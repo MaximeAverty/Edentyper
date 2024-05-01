@@ -38,7 +38,7 @@ const wordsHandler = {
         wordsHandler.createCaret()
         wordsHandler.handleCaret()
 
-        wordsHandler.domElements.wordContainer.addEventListener("click", () => {
+        document.addEventListener("click", () => {
             wordsHandler.domElements.wordInput.focus()
             
         })
@@ -194,7 +194,11 @@ const wordsHandler = {
 
         spanRaw.textContent = wordsHandler.rawWPM
         spanNet.textContent = wordsHandler.netWPM
-        spanAccuracy.textContent = `${wordsHandler.accuracy}%`
+        if(wordsHandler.accuracy < 1) {
+            spanAccuracy.textContent = `0%`
+        }else {
+            spanAccuracy.textContent = `${wordsHandler.accuracy}%`
+        }
 
         wordsHandler.domElements.resultDiv.style.top = "0"
 
@@ -262,91 +266,101 @@ const wordsHandler = {
         let currentWord = wordsHandler.domElements.getAllWords[wordsHandler.wordIndex]
         let allSpanLetters = currentWord.querySelectorAll(".letter")
 
-        if(!wordsHandler.isTestStarted) {
-            wordsHandler.startedTime = new Date().getTime()
-            wordsHandler.isTestStarted = true
-        }
-        if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
-            
-            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
-            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
-                wordsHandler.letterIndex++
-                wordsHandler.caretIndex++
-                wordsHandler.handleCaret()
-            }else {
-                wordsHandler.handleCaret(true, event.key)
+        let regex = /(tab|shift|escape|control|window|enter|right\shift|alt|fn|caps|cmd|fleche\sdirectionnelle)/;
+
+        if (regex.test(event.key.toLowerCase())) {
+            // Empêche l'action par défaut de la touche
+            event.preventDefault();
+            console.log("Vous ne pouvez pas utiliser cette touche.");
+        }else {
+            if(!wordsHandler.isTestStarted) {
+                wordsHandler.startedTime = new Date().getTime()
+                wordsHandler.isTestStarted = true
             }
-            
-        }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
-            event.preventDefault()
-            if(event.keyCode === SPACE_KEYCODE) {
-                if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
-                    wordsHandler.EndedTime = new Date().getTime()
-                    wordsHandler.wordIndex = 0
-                    wordsHandler.calculateWPM()
-                    wordsHandler.caluclateAccuracy()
-                    wordsHandler.isTestStarted = false
-                    wordsHandler.handleScore()
-                    wordsHandler.displayResult()
-                    wordsHandler.domElements.wordInput.blur()
-                    wordsHandler.accuracy = 0;
+            if(event.key === allSpanLetters[wordsHandler.letterIndex].textContent) {
+                
+                allSpanLetters[wordsHandler.letterIndex].classList.add("letter--correct")
+                if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                    wordsHandler.letterIndex++
+                    wordsHandler.caretIndex++
+                    wordsHandler.handleCaret()
                 }else {
-                    if(input.value.length === currentWord.textContent.length) {
-                        if(input.value === currentWord.textContent) {
-                            currentWord.classList.add("word--correct")
-                        }else {
-                            currentWord.classList.add("word--incorrect")
-                            wordsHandler.accuracyCounter++
-                        }
-                        wordsHandler.wordIndex++
-                        wordsHandler.caretIndex++
-                        wordsHandler.handleCaret()
-                        wordsHandler.letterIndex = 0
-                        input.value = ""
+                    wordsHandler.handleCaret(true, event.key)
+                }
+                
+            }else if (event.keyCode === SPACE_KEYCODE || event.keyCode === DEL_KEYCODE){
+                event.preventDefault()
+                if(event.keyCode === SPACE_KEYCODE) {
+                    if(wordsHandler.wordIndex === wordsHandler.domElements.getAllWords.length - 1) {
+                        wordsHandler.EndedTime = new Date().getTime()
+                        wordsHandler.wordIndex = 0
+                        wordsHandler.calculateWPM()
+                        wordsHandler.caluclateAccuracy()
+                        wordsHandler.isTestStarted = false
+                        wordsHandler.handleScore()
+                        wordsHandler.displayResult()
+                        wordsHandler.domElements.wordInput.blur()
+                        wordsHandler.accuracy = 0;
                     }else {
-                        input.value += " "
-                        allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
-                        if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
-                            wordsHandler.letterIndex++
+                        if(input.value.length === currentWord.textContent.length) {
+                            if(input.value === currentWord.textContent) {
+                                currentWord.classList.add("word--correct")
+                            }else {
+                                currentWord.classList.add("word--incorrect")
+                                wordsHandler.accuracyCounter++
+                            }
+                            wordsHandler.wordIndex++
                             wordsHandler.caretIndex++
                             wordsHandler.handleCaret()
-                            wordsHandler.accuracyCounter++
+                            wordsHandler.letterIndex = 0
+                            input.value = ""
                         }else {
-                            wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                            input.value += " "
+                            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+                            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                                wordsHandler.letterIndex++
+                                wordsHandler.caretIndex++
+                                wordsHandler.handleCaret()
+                                wordsHandler.accuracyCounter++
+                            }else {
+                                wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                            }
+                        }
+                    }
+                    
+                }else if(event.keyCode === DEL_KEYCODE) {
+                    if(wordsHandler.letterIndex > 0) {
+                        if(input.value.length === currentWord.textContent.length) {
+                            allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
+                            input.value = input.value.slice(0, -1)
+                            wordsHandler.handleCaret()
+                        }else {
+                            allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
+                            input.value = input.value.slice(0, -1)
+                            wordsHandler.letterIndex = wordsHandler.letterIndex - 1
+                            wordsHandler.caretIndex = wordsHandler.caretIndex - 1
+                            wordsHandler.handleCaret()
                         }
                     }
                 }
                 
-            }else if(event.keyCode === DEL_KEYCODE) {
-                if(wordsHandler.letterIndex > 0) {
-                    if(input.value.length === currentWord.textContent.length) {
-                        allSpanLetters[wordsHandler.letterIndex].classList.remove("letter--correct", "letter--incorrect")
-                        input.value = input.value.slice(0, -1)
-                        wordsHandler.handleCaret()
-                    }else {
-                        allSpanLetters[wordsHandler.letterIndex - 1].classList.remove("letter--correct", "letter--incorrect")
-                        input.value = input.value.slice(0, -1)
-                        wordsHandler.letterIndex = wordsHandler.letterIndex - 1
-                        wordsHandler.caretIndex = wordsHandler.caretIndex - 1
-                        wordsHandler.handleCaret()
-                    }
-                }
-            }
-            
-            
-        }else {
-            allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
-            wordsHandler.accuracyCounter++
-            if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
-                wordsHandler.letterIndex++
-                wordsHandler.caretIndex++
-                wordsHandler.handleCaret()
                 
             }else {
-                wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
-                
+                allSpanLetters[wordsHandler.letterIndex].classList.add("letter--incorrect")
+                wordsHandler.accuracyCounter++
+                if(wordsHandler.letterIndex != currentWord.textContent.length -1 ) {
+                    wordsHandler.letterIndex++
+                    wordsHandler.caretIndex++
+                    wordsHandler.handleCaret()
+                    
+                }else {
+                    wordsHandler.handleCaret(true, allSpanLetters[wordsHandler.letterIndex].textContent)
+                    
+                }
             }
         }
+
+        
 
 
     }
